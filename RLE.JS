@@ -9,7 +9,7 @@ if (arg[2] == 'code') {
     /*входные данные коммандной строки:
     node .js code/decode input.txt(откуда берем) out.txt(куда вставляем результат)
     */
-    fs.readFile(arg[2], (err, data) => {//читаем из файла
+    fs.readFile(arg[3], (err, data) => {//читаем из файла
         if (err) {//если ошибка, вывести ошибку и указать на место
             console.error(err);
             return;
@@ -38,7 +38,7 @@ if (arg[2] == 'code') {
             n = 1;
         }
     
-        fs.writeFileSync(arg[3], symb);
+        fs.writeFileSync(arg[4], symb);
     })
         
     //console.log(symb);
