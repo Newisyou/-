@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Hamming code </title>
+        <script>
+           function code(){
+              let message = document.getElementById('inputData').value;
+              let inputDigits = message.split('');
+              for(let i=0; i<inputDigits.length;i++){
+                inputDigits[i]=inputDigits[i]*1;
+              }  
+              inputDigits.push((inputDigits[0]+inputDigits[2]+inputDigits[3])%2);
+              inputDigits.push((inputDigits[1]+inputDigits[2]+inputDigits[3])%2);
+              inputDigits.push((inputDigits[0]+inputDigits[2]+inputDigits[1])%2);
+              document.getElementById('codedData').value = inputDigits.join('');
+           }
+
+
+
+           function decode(){
+
+            let input = document.getElementById('codedData').value;
+            let decoder = input.split('');
+            let er;
+            for(let i=0; i<decoder.length;i++){
+                decoder[i]=decoder[i]*1;
+              }
+
+            //Массив для хранения информации о возможных ошибках
+            let errors = new Array(7).fill('empty');
+
+            function check(bit1, bit2, bit3, pBit, errors){
+           //Проверка чётности суммы битов из одного круга
+            parityCheck = (decoder[bit1] + decoder[bit2] + decoder[bit3] + decoder[pBit]) % 2;
+    
+            //Массив битов из одного круга
+            masBites = [bit1, bit2, bit3, pBit];
+
+            //Заполнение массива ошибок
+            for (i in masBites){
+              if (errors[masBites[i]] === 'empty'){
+              errors[masBites[i]] = parityCheck;
+              }
+              else {
+                if (errors[masBites[i]] == 0 || parityCheck == 0){
+                  errors[masBites[i]] = 0;
+              }
+                else{
+                errors[masBites[i]] += parityCheck;
+                }
+              }
+            }
+              return errors   
+            }
+
+            //Последовательная проверка на ошибки трёх кругов
+            errors = check(0, 2, 3, 4, errors);
+            errors = check(1, 2, 3, 5, errors);
+            errors = check(0, 2, 1, 6, errors);
+            //В результате в массиве ошибок под индексом ошибочного элемента будет находится наибольшее число  
+            
+            if (errors.every(elem => elem == 0)){
+                    document.getElementById("error").value = 'correct';
+                }
+                else {
+                  errorBit = errors.indexOf(Math.max.apply(null, errors));
+                    //Исправление ошибочного элемента
+                    decoder[errorBit] = (decoder[errorBit] + 1) % 2;
+                    errorBit++;
+                    document.getElementById("error").value = 'error in '+ errorBit+ ' position'; 
+                }  
+            
+            document.getElementById("decodedData").value = decoder.join('');
+            }
+            
+            
+            function reset(){
+              document.getElementById('inputData').value ='';
+              document.getElementById('codedData').value ='';
+              document.getElementById('decodedData').value ='';
+              document.getElementById('error').value ='';
+
+            }
+        </script>
+    </head>
+    <style>
+      body {
+      background: #9370DB; /* Цвет фона и путь к файлу */
+      color: #fff; /* Цвет текста */
+      }
+      </style> 
+    <body>
+        <p><input type='text' id='inputData'/> input data </p>
+        <p><input type='button' onclick='code()' value ='Code'/></p>
+        <p><input type='text' id ='codedData'/> coded data </p>
+        <p><input type='button' onclick='decode()' value ='Decode'/></p>
+        <p><input type='text' id='decodedData'/> decoded data </p>
+        <p><input type='text' id='error'/> error</p>
+        <p><input type='button' onclick='reset()' value ='Reset'/></p>
+    </body>
+</html>
