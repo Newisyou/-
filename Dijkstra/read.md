@@ -1,4 +1,4 @@
-ввод: node .\dijkstra.js .\input.txt
+Ввод: node .\dijkstra.js .\input.txt
 
 Пример ввода: 3+4*2/(1-5)^2
 
