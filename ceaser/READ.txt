@@ -1,0 +1,9 @@
+Программа работает в 2 режимах code/decode
+
+Ввод code: node Caesar.js code 2(ключ/сдвиг)
+шифрует файл coded.txt, результат сохраняет в code.txt
+
+Ввод decode: node Caesar.js decode
+расшифровывает файл code.txt, результат в decode.txt
+
+в файле alph.txt каноничная частота букв английского алфавита
